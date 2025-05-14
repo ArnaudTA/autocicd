@@ -1,0 +1,35 @@
+# Import des catalog des jobs CPiN
+include:
+  - project: $CATALOG_PATH
+    file:
+      - vault-ci.yml
+      - kaniko-ci.yml
+    ref: main
+
+stages:
+  - read-secret
+  - inject-vars
+  - build-push
+
+# Lecture des secrets CI du build
+read_secret:
+  stage: read-secret
+  extends:
+    - .vault:read_secret
+
+# Remplacement de la variable version
+inject_vars:
+  stage: inject-vars
+  script:
+    - envsubst < static/index.html.template > static/index.html 
+
+# Build and push
+build_push:
+  stage: build-push
+  extends:
+    - .kaniko:build-push
+  variables:
+    DOCKERFILE: Dockerfile
+    WORKING_DIR: .
+    IMAGE_NAMES: $CI_PROJECT_NAME:$CI_COMMIT_BRANCH $CI_PROJECT_NAME:$CI_COMMIT_SHA
+    EXTRA_BUILD_ARGS: ""
