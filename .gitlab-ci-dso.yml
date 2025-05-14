@@ -21,8 +21,10 @@ read_secret:
 
 # Remplacement de la variable version
 inject_vars:
+  image: alpine
   stage: inject-vars
   script:
+    - apk add envsubst
     - envsubst < static/index.html.template > static/index.html 
 
 # Build and push
