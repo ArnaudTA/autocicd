@@ -6,6 +6,8 @@ on:
     - main
     - staging
     - 'feat/**'
+    tags:
+    - '**'
 
 jobs:
   build:
