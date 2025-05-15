@@ -6,6 +6,14 @@ on:
       - "**"
 
 jobs:
+  sync:
+    uses: ./.github/workflows/sync.yaml
+    secrets:
+      GILTAB_PROJECT_NAME: "${{ vars.GILTAB_PROJECT_NAME }}"
+      GITLAB_PROJECT_ID: "${{ vars.GITLAB_PROJECT_ID }}"
+      GIT_MIRROR_TOKEN: "${{ secrets.GIT_MIRROR_TOKEN }}"
+      GITLAB_URL:  "${{ secrets.GITLAB_URL }}"
+
   update-values:
     name: Add comment with preview infos
     runs-on: ubuntu-latest
