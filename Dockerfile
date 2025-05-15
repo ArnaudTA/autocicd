@@ -1,3 +1,4 @@
 FROM nginxinc/nginx-unprivileged:latest
 
-COPY static/index.html /usr/share/nginx/html/index.html
+COPY static/*.html /usr/share/nginx/html/
+COPY default.conf /etc/nginx/conf.d/default.conf
