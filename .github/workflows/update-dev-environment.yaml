@@ -1,0 +1,22 @@
+name: Preview on remote
+
+on:
+  pull_request:
+    types:
+      - labeled
+    branches:
+      - "**"
+
+jobs:
+  update-values:
+    name: Add comment with preview infos
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger environment update
+        env:
+          GH_TOKEN: ${{ secrets.HELM_UPDATER }}
+        run: |
+          BRANCH_NAME="${{ github.ref_name }}"
+          LAST_PART="${BRANCH_NAME##*/}"
+          echo "Last part: $LAST_PART"
+          gh workflow --repo ${{ github.repository_owner }}/autocicd-values run update-values.yaml -f ENV_NAME=$LAST_PART -f IMAGE_TAG=${{ github.sha }}
