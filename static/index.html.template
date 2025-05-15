@@ -9,5 +9,6 @@
     <h1>App version: $CI_COMMIT_SHA</h1>
     <div>Wooouh a new fancy feature ...</div>
     <div>Legend says hostname comes after: $HOSTNAME</div>
+    <div>Author: $USER</div>
 </body>
 </html>
