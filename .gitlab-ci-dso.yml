@@ -25,7 +25,11 @@ inject_vars:
   stage: inject-vars
   script:
     - apk add envsubst
-    - envsubst < static/index.html.template > static/index.html 
+    - envsubst < static/index.html.template > static/index.html
+  artifacts:
+    paths:
+      - static/index.html
+    expire_in: 1 week
 
 # Build and push
 build_push:
