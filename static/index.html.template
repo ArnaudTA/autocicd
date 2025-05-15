@@ -7,8 +7,9 @@
 </head>
 <body>
     <h1>App version: $CI_COMMIT_SHA</h1>
-    <div>Wooouh a new fancy feature ...</div>
-    <div>Legend says hostname comes after: $HOSTNAME</div>
-    <div>Author: $USER</div>
+    <p>Wooouh a new fancy feature ...</p>
+    <p>Legend says hostname comes after: $HOSTNAME</p>
+    <p>Author: $USER</p>
+    <p>From: $HOME</p>
 </body>
 </html>
