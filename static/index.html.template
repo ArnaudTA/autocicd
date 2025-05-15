@@ -7,5 +7,6 @@
 </head>
 <body>
     <h1>App version: $CI_COMMIT_SHA</h1>
+    <div>Wooouh a new fancy feature ...</div>
 </body>
 </html>
