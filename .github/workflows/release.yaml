@@ -1,0 +1,16 @@
+name: Publish the release to chart repository
+
+on:
+  push:
+    tags:
+    - '**'
+
+jobs:
+  update-chart:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger helm-charts update
+        env:
+          GH_TOKEN: ${{ secrets.HELM_UPDATER }}
+        run: |
+          gh workflow --repo ${{ github.repository_owner }}/autocicd-infra run update-chart.yaml -f APP_VERSION=${{ github.ref_name }} -f CHART_NAME=autocicd
