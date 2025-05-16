@@ -11,5 +11,6 @@
     <p>Legend says hostname comes after: $HOSTNAME</p>
     <p>Author: $USER</p>
     <p>From: $HOME</p>
+    <p>Akram approved</p>
 </body>
 </html>
