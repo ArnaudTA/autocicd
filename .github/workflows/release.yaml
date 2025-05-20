@@ -7,14 +7,31 @@ on:
 
 jobs:
   sync:
-    uses: ArnaudTA/actions/.github/workflows/sync.yaml@main
+    uses: ArnaudTA/actions/.github/workflows/sync.yaml@feat/add-wait
     secrets:
       GILTAB_PROJECT_NAME: "${{ vars.GILTAB_PROJECT_NAME }}"
-      GITLAB_PROJECT_ID: "${{ vars.GITLAB_PROJECT_ID }}"
-      GIT_MIRROR_TOKEN: "${{ secrets.GIT_MIRROR_TOKEN }}"
+      GITLAB_MIRROR_ID: "${{ vars.GITLAB_MIRROR_ID }}"
+      GITLAB_TRIGGER_TOKEN: "${{ secrets.GITLAB_TRIGGER_TOKEN }}"
       GITLAB_URL:  "${{ secrets.GITLAB_URL }}"
+      GITLAB_TOKEN: "${{ secrets.GITLAB_TOKEN }}"
+    with:
+      WAIT: true
+
+  wait-build:
+    needs: sync
+    uses: ArnaudTA/actions/.github/workflows/wait-pipeline.yaml@feat/add-wait
+    secrets:
+      GITLAB_PROJECT_ID: "${{ vars.GITLAB_PROJECT_ID }}"
+      GITLAB_URL:  "${{ secrets.GITLAB_URL }}"
+      GITLAB_TOKEN: "${{ secrets.GITLAB_TOKEN }}"
+    with:
+      REF: ${{ github.ref_name }}
+      GRACE_PERIOD: 30
+      SHA: ${{ github.sha }}
+      CHECK_INTERVAL: 15
 
   update-chart:
+    needs: wait-build
     runs-on: ubuntu-latest
     steps:
       - name: Trigger helm-charts update
