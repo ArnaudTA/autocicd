@@ -7,7 +7,7 @@ on:
 
 jobs:
   sync:
-    uses: ArnaudTA/actions/.github/workflows/sync.yaml@feat/add-wait
+    uses: ArnaudTA/actions/.github/workflows/sync.yaml@v1
     secrets:
       GILTAB_PROJECT_NAME: "${{ vars.GILTAB_PROJECT_NAME }}"
       GITLAB_MIRROR_ID: "${{ vars.GITLAB_MIRROR_ID }}"
@@ -19,7 +19,7 @@ jobs:
 
   wait-build:
     needs: sync
-    uses: ArnaudTA/actions/.github/workflows/wait-pipeline.yaml@feat/add-wait
+    uses: ArnaudTA/actions/.github/workflows/wait-pipeline.yaml@v1
     secrets:
       GITLAB_PROJECT_ID: "${{ vars.GITLAB_PROJECT_ID }}"
       GITLAB_URL:  "${{ secrets.GITLAB_URL }}"

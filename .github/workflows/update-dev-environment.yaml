@@ -6,7 +6,19 @@ on:
       - "**"
 
 jobs:
+  generate-timestamp:
+    runs-on: ubuntu-latest
+    outputs:
+      timestamp: ${{ steps.get-time.outputs.timestamp }}
+    steps:
+      - name: Get current UTC timestamp
+        id: get-time
+        run: |
+          timestamp=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          echo "timestamp=$timestamp" >> "$GITHUB_OUTPUT"
+
   sync:
+    needs: generate-timestamp
     uses: ArnaudTA/actions/.github/workflows/sync.yaml@main
     secrets:
       GILTAB_PROJECT_NAME: "${{ vars.GILTAB_PROJECT_NAME }}"
@@ -14,7 +26,21 @@ jobs:
       GIT_MIRROR_TOKEN: "${{ secrets.GIT_MIRROR_TOKEN }}"
       GITLAB_URL:  "${{ secrets.GITLAB_URL }}"
 
+  wait-build:
+    needs: sync
+    uses: ArnaudTA/actions/.github/workflows/wait-pipeline.yaml@v1
+    secrets:
+      GITLAB_PROJECT_ID: "${{ vars.GITLAB_PROJECT_ID }}"
+      GITLAB_URL:  "${{ secrets.GITLAB_URL }}"
+      GITLAB_TOKEN: "${{ secrets.GITLAB_TOKEN }}"
+    with:
+      REF: ${{ github.ref_name }}
+      GRACE_PERIOD: 30
+      SHA: ${{ github.sha }}
+      CHECK_INTERVAL: 15
+
   update-values:
+    needs: wait-build
     name: Update environment image tag
     runs-on: ubuntu-latest
     steps:
