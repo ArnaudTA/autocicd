@@ -19,11 +19,11 @@ jobs:
 
   sync:
     needs: generate-timestamp
-    uses: ArnaudTA/actions/.github/workflows/sync.yaml@main
+    uses: ArnaudTA/actions/.github/workflows/sync.yaml@v1
     secrets:
       GILTAB_PROJECT_NAME: "${{ vars.GILTAB_PROJECT_NAME }}"
-      GITLAB_PROJECT_ID: "${{ vars.GITLAB_PROJECT_ID }}"
-      GIT_MIRROR_TOKEN: "${{ secrets.GIT_MIRROR_TOKEN }}"
+      GITLAB_MIRROR_ID: "${{ vars.GITLAB_MIRROR_ID }}"
+      GITLAB_TRIGGER_TOKEN: "${{ secrets.GITLAB_TRIGGER_TOKEN }}"
       GITLAB_URL:  "${{ secrets.GITLAB_URL }}"
 
   wait-build:
