@@ -17,21 +17,24 @@ jobs:
     with:
       WAIT: true
 
-  wait-build:
-    needs: sync
-    uses: ArnaudTA/actions/.github/workflows/wait-pipeline.yaml@v1
+  build:
+    uses: ArnaudTA/actions/.github/workflows/run-pipeline.yaml@feat/run-pipeline
     secrets:
       GITLAB_PROJECT_ID: "${{ vars.GITLAB_PROJECT_ID }}"
+      GITLAB_TRIGGER_TOKEN: "${{ secrets.GITLAB_TOKEN }}"
       GITLAB_URL:  "${{ secrets.GITLAB_URL }}"
       GITLAB_TOKEN: "${{ secrets.GITLAB_TOKEN }}"
+      CI_VARS: |
+        foo=bar
+        abc=xyz
     with:
+      WAIT: true
       REF: ${{ github.ref_name }}
-      GRACE_PERIOD: 30
-      SHA: ${{ github.sha }}
-      CHECK_INTERVAL: 15
+      CI_VARS: |
+        tutu=champignon
 
   update-chart:
-    needs: wait-build
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Trigger helm-charts update
